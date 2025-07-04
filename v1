@@ -1,0 +1,233 @@
+# bring all custoers
+# bring all vehicles
+#bring all links
+
+# bring all customers who is having link target type = vehicle
+
+#bring all vechicle who is having link target type = customer
+# bring all customer who is having link tartget ty pe = vehicle and vhicle_year = 2022
+
+# bring all customer
+GET customer_entity_index_v10/_search
+{
+  "query": {
+    "match": {
+      "doc_type": "customer"
+    }
+  }
+}
+
+# bring all vehicles
+GET customer_entity_index_v10/_search
+{
+  "query": {
+    "match": {
+      "doc_type": "vehicle"
+    }
+  }
+}
+
+
+#bring all links
+
+GET customer_entity_index_v10/_search
+{
+  "size": 100,
+  "query": {
+    "match": {
+      "doc_type": "link"
+    }
+
+  }
+}
+
+
+
+# bring all customers who is having link target type = vehicle
+
+
+GET customer_entity_index_v10/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "doc_type": {
+              "value": "customer"
+            }
+          }
+        },
+        {
+          "has_child": {
+            "type": "customer_link",
+            "query": {
+              "bool": {
+                "must": [
+                  {
+                    "term": {
+                      "doc_type": {
+                        "value": "link"
+                      }
+                    }
+                  },
+                  {
+                    "match": {
+                      "target_type": "vehicle"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+#bring all vechicle who is having link target type = customer
+
+GET customer_entity_index_v10/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "doc_type": {
+              "value": "vehicle"
+            }
+          }
+        },
+        {
+          "has_child": {
+            "type": "vehicle_link",
+            "query": {
+              "bool": {
+                "must": [
+                  {
+                    "term": {
+                      "doc_type": {
+                        "value": "link"
+                      }
+                    }
+                  },
+                  {
+                    "match": {
+                      "target_type": "customer"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+GET customer_entity_index_v10/_search
+
+
+# bring all customer who is having link tartget ty pe = vehicle and vhicle_year = 2022
+
+
+GET customer_entity_index_v10/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "doc_type": {
+              "value": "customer"
+            }
+          }
+        },
+        {
+          "has_child": {
+            "type": "customer_link",
+            "query": {
+              "bool": {
+                "must": [
+                  {
+                    "term": {
+                      "doc_type": {
+                        "value": "link"
+                      }
+                    }
+                  },
+                  {
+                    "match": {
+                      "target_type": "vehicle"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+# bring all customer who is having link tartget ty pe = vehicle and vhicle_year = 2022
+
+GET customer_entity_index_v10/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "doc_type": {
+              "value": "vehicle"
+            }
+          }
+        },
+        {
+          "term": {
+            "vehicle_year": {
+              "value": 2022
+            }
+          }
+        },
+        {
+          "has_child": {
+            "type": "vehicle_link",
+            "query": {
+              "bool": {
+                "must": [
+                  {
+                    "term": {
+                      "doc_type": {
+                        "value": "link"
+                      }
+                    }
+                  },
+                  {
+                    "match": {
+                      "target_type": "customer"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+
+
+
+
