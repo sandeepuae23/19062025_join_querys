@@ -1,0 +1,62 @@
+GET customer_entity_index_v10/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "bool": {
+            "should": [
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "term": {
+                        "doc_type": "customer"
+                      }
+                    },
+                    {
+                      "has_child": {
+                        "type": "customer_link",
+                        "query": {
+                          "term": {
+                            "target_type": "vehicle"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "must": [
+                    {
+                      "term": {
+                        "doc_type": "vehicle"
+                      }
+                    },
+                    {
+                      "term": {
+                        "vehicle_year": 2022
+                      }
+                    },
+                    {
+                      "has_child": {
+                        "type": "vehicle_link",
+                        "query": {
+                          "term": {
+                            "source_type": "vehicle"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
