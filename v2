@@ -1,0 +1,83 @@
+GET customer_entity_index_v10/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "has_parent": {
+            "parent_type": "customer",
+            "query": {
+              "bool": {
+                "must": [
+                  {
+                    "term": {
+                      "doc_type": {
+                        "value": "customer"
+                      }
+                    }
+                  },
+                  {
+                    "term": {
+                      "customer_age": {
+                        "value": "32"
+                      }
+                    }
+                  },
+                  {
+                    "has_child": {
+                      "type": "customer_link",
+                      "query": {
+                        "term": {
+                          "target_type": {
+                            "value": "vehicle"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "has_parent": {
+            "parent_type": "vehicle",
+            "query": {
+              "bool": {
+                "must": [
+                  {
+                    "term": {
+                      "doc_type": {
+                        "value": "vehicle"
+                      }
+                    }
+                  },
+                  {
+                    "term": {
+                      "vehicle_year": {
+                        "value": 2022
+                      }
+                    }
+                  },
+                  {
+                    "has_child": {
+                      "type": "vehicle_link",
+                      "query": {
+                        "term": {
+                          "target_type": {
+                            "value": "customer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
